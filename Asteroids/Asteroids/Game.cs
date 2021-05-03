@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,7 +15,7 @@ namespace Asteroids
         private static BufferedGraphicsContext _context;
         public static BufferedGraphics Buffer;
         static Asteroid[] _asteroids;
-        static Asteroid[] _stars;
+        static FarStar[] _farStars;
 
         public static int Width { get; set; }
         public static int Height { get; set; }
@@ -43,13 +45,14 @@ namespace Asteroids
         public static void Draw()
         {
             Buffer.Graphics.Clear(Color.Black);
-            Buffer.Graphics.FillEllipse(Brushes.Red, new Rectangle(100, 100, 200, 200));
+
+            foreach (FarStar star in _farStars)
+                star.Draw();
+
+            Buffer.Graphics.FillEllipse(Brushes.Red, new Rectangle(100, 100, 100, 100));
 
             foreach (Asteroid asteroid in _asteroids)
                 asteroid.Draw();
-
-            foreach (Asteroid star in _stars)
-                star.Draw();
 
 
             Buffer.Render();
@@ -66,11 +69,11 @@ namespace Asteroids
                 _asteroids[i] = new Asteroid(new Point(600, i * 20 + 10), new Point(-i - 1, -i - 1), new Size(size, size));
             }
 
-            _stars = new Asteroid[20];
-            for (int i = 0; i < _stars.Length; i++)
-            {
-                _stars[i] = new Star(new Point(600, i * 40 + 10), new Point(-i - 1, -i - 1), new Size(5, 5));
-            }
+            _farStars = new FarStar[50];
+            for (int i = 0; i < _farStars.Length; i++)
+			{
+                _farStars[i] = new FarStar();
+			}
         }
 
         public static void Update()
@@ -78,8 +81,8 @@ namespace Asteroids
             foreach (Asteroid asteroid in _asteroids)
                 asteroid.Update();
 
-            foreach (Asteroid star in _stars)
-                star.Update();
+            foreach (FarStar flash in _farStars)
+                flash.Update();
         }
 
     }
