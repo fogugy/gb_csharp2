@@ -33,7 +33,7 @@ namespace Asteroids
 
         public virtual void Draw()
         {
-            Game.Buffer.Graphics.DrawImage(Image, Pos.X, Pos.Y);
+            Game.Buffer.Graphics.DrawImage(Image, Pos.X, Pos.Y, Size.Width, Size.Height);
         }
 
         public virtual void Update()
